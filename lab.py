@@ -2,6 +2,7 @@ from cmath import pi
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+# Modified from  and inspired by: https://stackoverflow.com/questions/57260345/is-there-any-way-to-display-a-360-degree-image-in-pyqt5-python
 
 class Panoramic(QtWidgets.QWidget):
     def __init__(self, imagePath):
