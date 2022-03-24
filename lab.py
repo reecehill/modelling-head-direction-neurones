@@ -10,6 +10,7 @@ class Panoramic(QtWidgets.QWidget):
         self.setCursor(QtCore.Qt.CrossCursor)
         # keep a reference of the original image
         self.source = QtGui.QPixmap(imagePath)
+        print("Scene circumference: "+str(self.source.width()))
         self.pano = QtGui.QPixmap(
             self.source.width() * 3, self.source.height())
         self.center = self.pano.rect().center()
@@ -34,7 +35,6 @@ class Panoramic(QtWidgets.QWidget):
         qp.drawPixmap(self.source.width(), 0, self.source)
         qp.drawPixmap(self.source.width() * 2, 0, self.source)
         qp.end()
-        print(self.sourceRect.width())
 
     def moveCenter(self):
         if not self.delta:
@@ -44,9 +44,12 @@ class Panoramic(QtWidgets.QWidget):
 
         self.center += self.delta
 
-        distanceFromZero = self.center.x() - 3149
-
-        print((distanceFromZero / (pi * 2*self.viewingDistance)*360))
+        distanceFromZero = self.center.x() - 3149.45
+        viewingAngleRelativeToFixedPoint = (
+            distanceFromZero / (pi * 2*self.viewingDistance)*360)
+        
+        # TODO: There is slight inaccuracy in calculation of degrees - full circle does not equal 360!
+        print("Head direction, theta (degrees): "+str(viewingAngleRelativeToFixedPoint))
         # limit the vertical position
         # if self.center.y() < self.sourceRect.height() * .5:
         #    self.center.setY(self.sourceRect.height() * .5)
@@ -83,7 +86,7 @@ class Panoramic(QtWidgets.QWidget):
 
     # resize and reposition the coordinates whenever the window is resized
     def resizeEvent(self, event):
-        print(self.width())
+        print("View/horizon width: "+str(self.width()))
         self.sourceRect.setSize(self.size())
         self.sourceRect.moveCenter(self.center)
 
