@@ -1,3 +1,4 @@
+tic
 clear all
 clc
 
@@ -57,3 +58,4 @@ f = sigmoid(a,b,c,beta,u);
 
 f1 = f(1001,:);
 plot(theta,f1)
+toc
