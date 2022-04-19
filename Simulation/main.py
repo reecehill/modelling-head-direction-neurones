@@ -1,3 +1,5 @@
+import time
+start = time.time()
 import parameters as p
 import commonFunctions as f
 import plottingFunctions as pf
@@ -25,4 +27,6 @@ figure3 = pf.plotWeightDistribution(weightsForAllNeurones_Noise, hasNoise=True)
 copyfile(p.cwd+'/parameters.py', str(p.outputDirectory)+'/parameters.py')
 
 
+print("Finished, time elapsed: "+str(time.time() - start)+' seconds')
+print("Now showing graphs...")
 showFigures()
