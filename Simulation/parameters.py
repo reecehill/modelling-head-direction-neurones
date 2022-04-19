@@ -8,7 +8,7 @@ import numpy as np
 generateWeightsMethod = 'templateNeurone'
 
 
-numberOfUnits = 720
+numberOfUnits = 360
 
 f_max = 40 #Hz
 
