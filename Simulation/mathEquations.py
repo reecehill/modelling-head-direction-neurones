@@ -3,11 +3,12 @@ import parameters as p
 
 # Returns firing rate, f, as a function of head direction, theta.
 # It has a Guassian-like shape.
-def getTuningCurve():
+def getTuningCurve(theta_0):
   # See: Equation 1
   
+  # For every possible theta, get the difference between it and this neurone's preferred angle.
+  anglesInDegrees = p.theta - theta_0
   # Convert angles to radians as required by np.cos()
-  anglesInDegrees = p.theta - p.theta_0
   anglesInRadians = np.radians(anglesInDegrees)
   
   f = p.A + p.B*np.exp(p.K * np.cos(anglesInRadians))

@@ -1,9 +1,9 @@
 import time
 start = time.time()
 import parameters as p
-import commonFunctions as f
 import plottingFunctions as pf
-import weightHandler as w
+import populationHandler as ph
+import weightHandler as wh
 from matplotlib.pyplot import show as showFigures
 from matplotlib.pyplot import close as closeAllFigures
 from shutil import copyfile
@@ -14,12 +14,20 @@ closeAllFigures()
 
 figure1 = pf.plotTuningCurve()
 
-# Generate a population of neurones that have unique, discretised directions
-weightsForAllNeurones = w.generateWeightsForAllNeurones()
+# Generate a population of neurones.
+neuronalPopulation = ph.generatePopulation()
+figure3 = pf.plotSampledNeuroneWeightDistributions(neuronalPopulation)
+
+
+
+# Gather the neuronal population's weights into a matrix.
+weightsForAllNeurones = ph.getPopulationWeights(neuronalPopulation)
+
 figure2 = pf.plotWeightDistribution(weightsForAllNeurones)
 
+
 # Inject noise into this neuronal population
-weightsForAllNeurones_Noise = w.injectNoise(weightsForAllNeurones)
+weightsForAllNeurones_Noise = wh.injectNoise(weightsForAllNeurones)
 figure3 = pf.plotWeightDistribution(weightsForAllNeurones_Noise, hasNoise=True)
 
 

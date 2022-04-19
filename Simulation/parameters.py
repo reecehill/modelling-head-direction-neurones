@@ -1,8 +1,14 @@
 import automatedParameters
 import numpy as np
 
+# Weights for each neurone can be generated in one of two ways:
+# 1) 'templateNeurone': By copying the weights of a neurone with theta_0=0 and then "rolling" the weights. This leads to a matrix diagonal that is equal.
+# 2) 'independentNeurone': By generating weights between neurones independent of each other.
+# NOTE: Option 2 leads to bizarre behaviour.  
+generateWeightsMethod = 'templateNeurone'
 
-numberOfUnits = 360
+
+numberOfUnits = 720
 
 f_max = 40 #Hz
 
@@ -45,8 +51,8 @@ K = 8
 
 # TODO: Taken from ?
 # To produce Figure 2...
-# A = 2.53
-A = 1
+A = 2.53
+#A = 1
 
 # TODO: Taken from ?
 # To produce Figure 2...
@@ -54,9 +60,6 @@ A = 1
 # To produce Figure ?...
 B = (f_max - A)/np.exp(K)
 
-
-# TODO: Taken from ?
-theta_0 = 0
 
 
 # ---------------------------

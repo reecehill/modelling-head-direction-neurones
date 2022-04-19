@@ -10,8 +10,7 @@ def setSeed():
   return randomGenerator
 
 def getTheta():
-  # NOTE: This differs to Parrivesh's code, where they multiply by 2 after linspace. Here, we begin with a doubled range - rather than later scaling.
-  # TODO: It could be possible to take this further - and perform all scalings in advance.
+  # NOTE: This differs to Parrivesh's code, where they multiply by pi/180 after linspace to get it in radians.
   linearlySpacedTheta = np.linspace(-180, 180, p.numberOfUnits)
   theta = linearlySpacedTheta
   return theta

@@ -3,7 +3,7 @@ clear all
 clc
 
 f_max = 40;
-theta_0 = 90;
+theta_0 = 0;
 A = 1;
 K = 8;
 B = (f_max - A)/exp(K);
