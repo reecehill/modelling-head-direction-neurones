@@ -52,7 +52,8 @@ def generateWeightsForAllNeurones():
             weightsForAllNeurones[thetaIndex], thetaIndex)
         weightsForAllNeurones[thetaIndex] = rolledColumn
     
-    np.savetxt(p.outputDirectory+'/out.csv', weightsForAllNeurones, delimiter=',')
+    np.savetxt(p.outputDirectory+'/noiseless-weights.csv',
+               weightsForAllNeurones, delimiter=',')
     return weightsForAllNeurones
 
 def injectNoise(weightsForAllNeurones):
