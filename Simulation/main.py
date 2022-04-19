@@ -18,7 +18,7 @@ figure2 = pf.plotWeightDistribution(weightsForAllNeurones)
 
 # Inject noise into this neuronal population
 weightsForAllNeurones_Noise = w.injectNoise(weightsForAllNeurones)
-figure3 = pf.plotWeightDistribution(weightsForAllNeurones_Noise)
+figure3 = pf.plotWeightDistribution(weightsForAllNeurones_Noise, hasNoise=True)
 
 
 # Copy parameters.py to output directory.

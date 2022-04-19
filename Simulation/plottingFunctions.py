@@ -35,7 +35,9 @@ def plotTuningCurve():
   return fig
 
 
-def plotWeightDistribution(weights):  
+def plotWeightDistribution(weights, hasNoise=False):
+  # NOTE: This produces figures that are sensitive to theta_0 (i.e., the preferred head direction).
+  # TODO: This function could do with some experimentation, where neuronal population weights are not rolled, but rather set according to varying theta_0.
   fig = plt.figure()
   ax = fig.add_subplot()
   im = ax.imshow(weights)
@@ -44,7 +46,13 @@ def plotWeightDistribution(weights):
   ax.invert_yaxis()
   plt.xlabel(r"HD cell's preferred direction, $\theta$ (degrees)")
   plt.ylabel(r"HD cell's preferred direction, $\theta$ (degrees)")
-  plt.suptitle("Strength of connections (weights) between neurones")
   plt.title(r"K=%d, A=%d, B=%d, $\theta_0$=%d" % (p.K, p.A, p.B, p.theta_0))
   fig.colorbar(im)
+  if(hasNoise):
+    plt.suptitle("Strength of connections (weights) between neurones (noisy)")
+    plt.savefig(p.outputDirectory+'/figures/weights-heatmap-noisy.svg', dpi=350)
+  else:
+    plt.suptitle("Strength of connections (weights) between neurones (noiseless)")
+    plt.savefig(p.outputDirectory + '/figures/weights-heatmap-noiseless.svg', dpi=350)
+  
   return fig

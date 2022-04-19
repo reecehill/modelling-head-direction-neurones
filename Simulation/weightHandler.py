@@ -45,7 +45,7 @@ def generateWeightsForAllNeurones():
     # Duplicate this neurone, to produce a 360x360 matrix of neurones with identical preferred directions, theta_0
     weightsForAllNeurones = np.repeat(
         weightsForOneNeurone, p.numberOfUnits).reshape(p.numberOfUnits, p.numberOfUnits).T
-
+    
     # Now, roll each neurone so that every neurone's weights are unique by being offset by 1.
     for thetaIndex, theta in enumerate(p.theta):
         rolledColumn = np.roll(
