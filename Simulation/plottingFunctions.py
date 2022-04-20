@@ -42,16 +42,16 @@ def plotSampledNeuroneWeightDistributions(neuronalPopulation):
   fig, ax = plt.subplots(nrows=3, ncols=4, squeeze=True)
   fig.set_tight_layout(True)
   neuroneIdsToSample = np.linspace(
-      0, len(neuronalPopulation['neurones'])-1, num=12)
+      0, len(neuronalPopulation.neurones)-1, num=12)
   rowId = 0
   columnId = 0
   for neuroneId in neuroneIdsToSample:
-    neuroneWeights = neuronalPopulation['neurones'][int(neuroneId)]['weights']
+    neuroneWeights = neuronalPopulation.neurones[int(neuroneId)].weights
     ax[rowId, columnId].plot(p.theta, neuroneWeights)
     maxYIndex = np.argmax(neuroneWeights)
     ax[rowId, columnId].axvline(p.theta[maxYIndex], color='red')
     ax[rowId, columnId].set_title(
-        r'$\theta_0=%d°$' "\n" r'Strongest connection to: %d°' % (neuronalPopulation['neurones'][int(neuroneId)]['theta_0'], p.theta[maxYIndex]))
+        r'$\theta_0=%d°$' "\n" r'Strongest connection to: %d°' % (neuronalPopulation.neurones[int(neuroneId)].theta_0, p.theta[maxYIndex]))
     ax[rowId, columnId].set_xlabel(
         r'Neurone(s) with preferred head direction, $\theta$')
     ax[rowId, columnId].set_ylabel('Weight to neurone')
