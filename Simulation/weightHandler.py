@@ -41,6 +41,6 @@ def injectNoise(weightsForAllNeurones):
   meanOfNoise = 0
   stdOfNoise = p.epsilon * np.mean(np.abs(weightsForAllNeurones))
   noise = p.randomGenerator.normal(
-      loc=0, scale=stdOfNoise, size=(p.numberOfUnits, p.numberOfUnits))
+      loc=meanOfNoise, scale=stdOfNoise, size=(p.numberOfUnits, p.numberOfUnits))
   weightsForAllNeurones_Noise = weightsForAllNeurones + noise
   return weightsForAllNeurones_Noise
