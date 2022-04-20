@@ -21,7 +21,7 @@ figure3 = pf.plotSampledNeuroneWeightDistributions(neuronalPopulation)
 
 
 # Gather the neuronal population's weights into a matrix.
-weightsForAllNeurones = ph.getPopulationWeights(neuronalPopulation)
+weightsForAllNeurones = neuronalPopulation.getAllWeights()
 
 figure2 = pf.plotWeightDistribution(weightsForAllNeurones)
 
