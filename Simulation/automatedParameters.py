@@ -9,11 +9,11 @@ def setSeed():
   randomGenerator = np.random.default_rng(seed)
   return randomGenerator
 
-def getTheta():
+def getThetaSeries():
   # NOTE: This differs to Parrivesh's code, where they multiply by pi/180 after linspace to get it in radians.
   linearlySpacedTheta = np.linspace(-180, 180, p.numberOfUnits)
-  theta = linearlySpacedTheta
-  return theta
+  thetaSeries = linearlySpacedTheta
+  return thetaSeries
 
 
 def getOutputDirectory():
@@ -32,7 +32,7 @@ def getTimeSeries():
   
 def generate():
   outputDirectory, cwd = getOutputDirectory()
-  theta = getTheta()
+  thetaSeries = getThetaSeries()
   randomGenerator = setSeed()
   timeSeries = getTimeSeries()
-  return outputDirectory, cwd, randomGenerator, theta, timeSeries
+  return outputDirectory, cwd, randomGenerator, thetaSeries, timeSeries

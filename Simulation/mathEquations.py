@@ -7,7 +7,7 @@ def getTuningCurve(theta_0):
   # See: Equation 1
   
   # For every possible theta, get the difference between it and this neurone's preferred angle.
-  anglesInDegrees = p.theta - theta_0
+  anglesInDegrees = p.thetaSeries - theta_0
   # Convert angles to radians as required by np.cos()
   anglesInRadians = np.radians(anglesInDegrees)
   

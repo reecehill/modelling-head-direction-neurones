@@ -13,10 +13,13 @@ import numpy as np
 generateWeightsMethod = 'templateNeurone'
 
 # Network size
-numberOfUnits = 360
+numberOfUnits = 361
 
 
 f_max = 40 #Hz
+
+# Actual theta of current head direction (in degrees)
+actualTheta = 0
 
 # Taken from Section 3, Basic Dynamic Model, in-text.
 # Time steps in
@@ -105,4 +108,4 @@ epsilon = 0.1
 # //////////////////////////////////
 
 # Do not edit below this line
-outputDirectory, cwd, randomGenerator, theta, timeSeries = automatedParameters.generate()
+outputDirectory, cwd, randomGenerator, thetaSeries, timeSeries = automatedParameters.generate()

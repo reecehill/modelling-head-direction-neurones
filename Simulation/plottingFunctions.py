@@ -19,7 +19,7 @@ def plotTuningCurve():
   fig = plt.figure("Paper - Figure 2")
   ax = fig.add_subplot()
   dataY = e.getTuningCurve(theta_0=theta_0)
-  dataX = theta_0 - p.theta
+  dataX = theta_0 - p.thetaSeries
   plt.plot(dataX, dataY)
   plt.suptitle("Activity of a HD cell in the anterior thalamus")
   plt.title(r"K=%d, A=%d, B=%d" % (p.K, p.A, p.B))
@@ -29,7 +29,7 @@ def plotTuningCurve():
 
   # Add padding to x and y axis.
   plt.ylim(0, dataY.max()+(dataY.max()*0.1))
-  plt.xlim(p.theta.min(), p.theta.max())
+  plt.xlim(p.thetaSeries.min(), p.thetaSeries.max())
 
   # Suffix x-axis labels with degree sign.
   ax.xaxis.set_major_formatter('{x:1.0f}°')
@@ -50,11 +50,11 @@ def plotSampledNeuroneWeightDistributions(neuronalPopulation):
   rowId = 0
   columnId = 0
   for neurone in neuronalPopulation.neurones[neuroneIdsToSample.astype(int)]:
-    ax[rowId, columnId].plot(p.theta, neurone.getWeights())
+    ax[rowId, columnId].plot(p.thetaSeries, neurone.getWeights())
     maxYIndex = np.argmax(neurone.getWeights())
-    ax[rowId, columnId].axvline(p.theta[maxYIndex], color='red')
+    ax[rowId, columnId].axvline(p.thetaSeries[maxYIndex], color='red')
     ax[rowId, columnId].set_title(
-        r'$\theta_0=%d°$' "\n" r'Strongest connection to: %d°' % (neurone.theta_0, p.theta[maxYIndex]))
+        r'$\theta_0=%d°$' "\n" r'Strongest connection to: %d°' % (neurone.theta_0, p.thetaSeries[maxYIndex]))
     ax[rowId, columnId].set_xlabel(
         r'Neurone(s) with preferred head direction, $\theta$')
     ax[rowId, columnId].set_ylabel('Weight to neurone')
@@ -80,8 +80,8 @@ def plotWeightDistribution(weights, hasNoise=False):
   im = ax.imshow(weights)
   ticks = [{
       'location': int(i),
-      'label': str(np.ceil(p.theta[int(i)]))+'°'
-  } for i in np.linspace(0, len(p.theta)-1, 9)]
+      'label': str(np.ceil(p.thetaSeries[int(i)]))+'°'
+  } for i in np.linspace(0, len(p.thetaSeries)-1, 9)]
   ax.invert_yaxis()
 
   ax.set_xticks([tick['location'] for tick in ticks],
@@ -90,12 +90,14 @@ def plotWeightDistribution(weights, hasNoise=False):
                 [tick['label'] for tick in ticks])
   plt.xlabel(r"HD cell's preferred direction, $\theta$ (degrees)")
   plt.ylabel(r"HD cell's preferred direction, $\theta$ (degrees)")
-  plt.title(r"K=%d, A=%d, B=%d" % (p.K, p.A, p.B))
+
   fig.colorbar(im)
   if(hasNoise):
+    plt.title(r"K=%d, A=%d, B=%d, " "$\lambda$" "=%f" % (p.K, p.A, p.B, p.penaltyForMagnitude_0))
     plt.suptitle("Strength of connections (weights) between neurones (noisy)")
     plt.savefig(p.outputDirectory+'/figures/weights-heatmap-noisy.svg', dpi=350)
   else:
+    plt.title(r"K=%d, A=%d, B=%d" % (p.K, p.A, p.B))
     plt.suptitle("Strength of connections (weights) between neurones (noiseless)")
     plt.savefig(p.outputDirectory + '/figures/weights-heatmap-noiseless.svg', dpi=350)
   
@@ -115,12 +117,19 @@ def plotTest(neuronalPopulation):
 
   # Labelling Z-Axis
   ax.set_zlabel('Time')
-  
-  initialF = p.randomGenerator.uniform(low=0,high=1,size=p.numberOfUnits)
+  plt.suptitle('du/dt over time')
+  plt.title('for a population with weights configured for theta=%d' %
+            (p.actualTheta))
+  initialF = p.randomGenerator.uniform(
+      low=0, high=p.f_max, size=p.numberOfUnits)
+  initialF = e.getTuningCurve(theta_0=90)
   initialU = e.getU(initialF)
   w = neuronalPopulation.getAllWeights()
   sol = solve_ivp(e.getDuDt, (p.timeSeries[0], p.timeSeries[-1]), initialU, args=[w, initialF])
   uAtTimeT = sol.y.T
   fAtTimeT = e.getF(uAtTimeT)
   for fIndex, f in enumerate(fAtTimeT):
-    plt.plot(p.theta, f, p.timeSeries[fIndex],  color='black')
+    plt.plot(p.thetaSeries, f, p.timeSeries[fIndex],  color='black')
+  
+  plt.savefig(p.outputDirectory +
+              '/figures/dudt-over-time-NOT-CORRECT.svg', dpi=350)
