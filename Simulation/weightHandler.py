@@ -2,6 +2,8 @@ import numpy as np
 import parameters as p
 import mathEquations as e
 
+import matplotlib.pyplot as plt
+from sys import exit
 
 def generateWeightsForOneNeurone(theta_0):
     # For this function, see: Section 4.3, Synaptic Weight Distribution
@@ -19,22 +21,62 @@ def generateWeightsForOneNeurone(theta_0):
 
     # Find squared firing rates (f)
     # TODO: Parrivesh finds abs before squaring, is this necessary?
-    firingRatesByThetaFft_squared = firingRatesByThetaFft**2
+    firingRatesByThetaFft_squared = np.square(
+        np.absolute(firingRatesByThetaFft))
 
     # Calculate the amount by which large weights will be penalised.
     penaltyForMagnitude = p.penaltyForMagnitude_0 * \
         firingRatesByThetaFft_squared.max()
 
+    # !!!!!
+    # DEBUGGING
+    # In order to run this script, you must run main.py
+    # The script will only run the below code once, then all execution will be stopped (so you won't get 300+ figures!)
+
+    u_hat = netInputsByThetaFft
+    f_hat = firingRatesByThetaFft
+    Lambda = p.penaltyForMagnitude_0 * \
+        np.square(np.abs(firingRatesByThetaFft)).max()
+    w_hat = np.divide((np.matmul(u_hat, f_hat)),
+                      (Lambda + np.square(np.abs(f_hat))))
     # Compute weight matrix in Fourier ?space.
     # Taken from Section 4.3, Synaptic Weights Distribution, in-text, final equation.
-    weightsFft = np.multiply(netInputsByThetaFft, firingRatesByThetaFft) / \
-        np.add(penaltyForMagnitude, firingRatesByThetaFft_squared)
+    numerator = np.multiply(netInputsByThetaFft, firingRatesByThetaFft)
+    denominator = penaltyForMagnitude + firingRatesByThetaFft_squared
+    weightsFft = np.divide(numerator, denominator)
+    plt.figure()
+    plt.title('netInputsByTheta')
+    plt.plot(np.linspace(
+        p.thetaSeries[0], p.thetaSeries[-1], p.numberOfUnits), netInputsByTheta)
+
+    plt.figure()
+    plt.title('firingRatesByThetaFft')
+    plt.plot(np.linspace(
+        p.thetaSeries[0], p.thetaSeries[-1], p.numberOfUnits), firingRatesByThetaFft)
+
+    plt.figure()
+    plt.title('weightsFft')
+    plt.plot(np.linspace(
+        p.thetaSeries[0], p.thetaSeries[-1], p.numberOfUnits), weightsFft)
+
+    plt.figure()
+    plt.title('w_hat')
+    plt.plot(np.linspace(
+        p.thetaSeries[0], p.thetaSeries[-1], p.numberOfUnits), np.abs(w_hat))
+    plt.show()
+    exit() # No code will run after this.
+
+    # !!!!!
+    # END DEBUGGING
+
 
     # Convert weights into ?normal domain.
     # TODO: Notice that we get rid of the imaginary part. Is this right? It matches result of Parrivesh, so assume it's a difference in Python.
     weights = np.fft.ifft(weightsFft).real
 
-    return weights
+    # Scaling factor weights*N
+    # NOTE: This may actually be weights/N
+    return weights*p.numberOfUnits
 
 
 def injectNoise(weightsForAllNeurones):
