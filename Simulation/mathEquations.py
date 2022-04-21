@@ -27,16 +27,17 @@ def getSigmoid(x):
 
 # Returns the input given to a single neuronal input (neurone), x, given its output, sigma.
 # Is the inverse of getSigmoid().
-def getInverseSigmoid(sigmoid):
+def getInverseSigmoid(sigma):
   # Mathematically derived, by Parrivesh, from Equation 4.
-  x = 1/p.b * np.log( np.exp(( sigmoid/p.alpha )**(1/p.beta)) -1) - p.c
+  x = 1/p.b * np.log( np.exp(( sigma/p.alpha )**(1/p.beta)) -1) - p.c
   return x
 
-def getDuDt(u, w):
+def getDuDt(u, t, w, f):
   # TODO: Confirm, is f() the sigmoid function here? This is not clear in the paper.
   # See: Equation 2. 
-  f = getSigmoid(u);
-  duDt = 1/p.tau * ( -u + w*f )
+  
+  #f = getSigmoid(u);
+  duDt = 1/p.tau * ( -u + np.matmul(w,f) )
   return duDt
 
 
