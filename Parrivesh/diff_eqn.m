@@ -9,7 +9,7 @@
 
 
 function dudt = diff_eqn(t,u,a,b,c,beta,w,tau)
-
-    dudt = 1/tau * (-u + w*( a*(log(1 + exp(b*(u+c))).^beta) ));
+    f = a*(log(1+exp(b*(x+c))).^beta);
+    dudt = 1/tau * (-u + w*f);
 
 end
