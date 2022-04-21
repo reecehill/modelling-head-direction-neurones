@@ -1,5 +1,3 @@
-# Please use the "using-classes" branch for any future edits. 
-
 # This repo contains three pieces of work
 1) Interface (Python): this is intended as a proof-of-concept piece, to produce realtime graphs of cell activity as the head is turned. by Reece.
 2) Parrivesh (Matlab): work produced by Parrivesh (31/03/22), stored here for reference.
