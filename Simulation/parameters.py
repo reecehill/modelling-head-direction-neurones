@@ -72,8 +72,8 @@ K = 8
 
 # TODO: Taken from ?
 # To produce Figure 2...
-A = 2.53
-#A = 1
+#A = 2.53
+A = 1
 
 # TODO: Taken from ?
 # To produce Figure 2...
