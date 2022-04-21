@@ -20,7 +20,7 @@ def getTuningCurve(theta_0):
 # Is an adaptation of the conventional sigmoid function, for reasons explained in section 4.2
 def getSigmoid(x):
   # See: Equation 4
-  sigma = p.alpha * np.log( (1 + np.exp(p.b * (x + p.c))) ** p.beta)
+  sigma = p.alpha * np.log( (1 + np.exp(p.b * (x + p.c)))) ** p.beta
   return sigma
 
 
