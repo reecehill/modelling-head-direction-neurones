@@ -1,19 +1,37 @@
 import automatedParameters
 import numpy as np
 
+# ----------START------------
+# SIMULATION PARAMETERS
+# ---------------------------
+
+
 # Weights for each neurone can be generated in one of two ways:
 # 1) 'templateNeurone': By copying the weights of a neurone with theta_0=0 and then "rolling" the weights. This leads to a matrix diagonal that is equal.
 # 2) 'independentNeurone': By generating weights between neurones independent of each other.
 # NOTE: Option 2 leads to bizarre behaviour.  
 generateWeightsMethod = 'templateNeurone'
 
-
+# Network size
 numberOfUnits = 360
+
 
 f_max = 40 #Hz
 
 # Taken from Section 3, Basic Dynamic Model, in-text.
+# Time steps in
 tau = 10 #msec
+
+# Total time to simulate for
+totalSimulationTime = 400 #msec
+
+# ----------END------------
+# SIMULATION PARAMETERS
+# ---------------------------
+
+
+# //////////////////////////////////
+
 
 
 # ----------START------------
@@ -87,4 +105,4 @@ epsilon = 0.1
 # //////////////////////////////////
 
 # Do not edit below this line
-outputDirectory, cwd, randomGenerator, theta = automatedParameters.generate()
+outputDirectory, cwd, randomGenerator, theta, timeSeries = automatedParameters.generate()

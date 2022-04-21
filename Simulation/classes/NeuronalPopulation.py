@@ -8,12 +8,14 @@ class NeuronalPopulation:
       # It is possible to generate neurones in one of two ways. See parameters.py for more information.
       if(p.generateWeightsMethod == 'independentNeurone'):
         # Get each neurone's weight independently by looping through all theta values.
-        self.neurones = np.array([Neurone(theta_0=theta, weights=wh.generateWeightsForOneNeurone(
+        self.neurones = np.array([Neurone(theta_0=theta, evenWeights=wh.generateWeightsForOneNeurone(
             theta_0=theta)) for theta in p.theta])
         
       elif(p.generateWeightsMethod == 'templateNeurone'):
       # Instantiate a neurone with preferred direction 0, then roll its weights to offset them according to thetaIndex.
-        self.neurones = np.array([Neurone(theta_0=theta, weights=np.roll(wh.generateWeightsForOneNeurone(theta_0=0), thetaIndex)) for thetaIndex, theta in enumerate(p.theta)])
+        self.neurones = np.array([Neurone(theta_0=theta, evenWeights=np.roll(wh.generateWeightsForOneNeurone(theta_0=0), thetaIndex)) for thetaIndex, theta in enumerate(p.theta)])
 
   def getAllWeights(self):
-    return [neurone.weights for neurone in self.neurones]
+    # Returns w(θ,t)
+    # See: Equation 2. 
+    return np.array(np.add([neurone.evenWeights for neurone in self.neurones],[neurone.oddWeights for neurone in self.neurones]))

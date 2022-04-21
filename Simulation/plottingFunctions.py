@@ -1,8 +1,11 @@
 import matplotlib.pyplot as plt
 import matplotlib as mpl
+import matplotlib.pylab as pl
 import parameters as p
 import mathEquations as e
 import numpy as np
+from scipy.integrate import solve_ivp
+import weightHandler as wh
 
 mpl.rcParams['savefig.dpi'] = 1000
 mpl.rcParams['figure.figsize'] = (19, 10)
@@ -47,8 +50,8 @@ def plotSampledNeuroneWeightDistributions(neuronalPopulation):
   rowId = 0
   columnId = 0
   for neurone in neuronalPopulation.neurones[neuroneIdsToSample.astype(int)]:
-    ax[rowId, columnId].plot(p.theta, neurone.weights)
-    maxYIndex = np.argmax(neurone.weights)
+    ax[rowId, columnId].plot(p.theta, neurone.getWeights())
+    maxYIndex = np.argmax(neurone.getWeights())
     ax[rowId, columnId].axvline(p.theta[maxYIndex], color='red')
     ax[rowId, columnId].set_title(
         r'$\theta_0=%d°$' "\n" r'Strongest connection to: %d°' % (neurone.theta_0, p.theta[maxYIndex]))
@@ -97,3 +100,27 @@ def plotWeightDistribution(weights, hasNoise=False):
     plt.savefig(p.outputDirectory + '/figures/weights-heatmap-noiseless.svg', dpi=350)
   
   return fig
+
+
+def plotTest(neuronalPopulation):
+    # Solve for time
+  fig = plt.figure()
+  ax = fig.gca(projection='3d')
+
+    # Labelling X-Axis
+  ax.set_xlabel('Theta')
+
+  # Labelling Y-Axis
+  ax.set_ylabel('Hz')
+
+  # Labelling Z-Axis
+  ax.set_zlabel('Time')
+  
+  initialF = p.randomGenerator.uniform(low=0,high=1,size=p.numberOfUnits)
+  initialU = e.getU(initialF)
+  w = neuronalPopulation.getAllWeights()
+  sol = solve_ivp(e.getDuDt, (p.timeSeries[0], p.timeSeries[-1]), initialU, args=[w, initialF])
+  uAtTimeT = sol.y.T
+  fAtTimeT = e.getF(uAtTimeT)
+  for fIndex, f in enumerate(fAtTimeT):
+    plt.plot(p.theta, f, p.timeSeries[fIndex],  color='black')

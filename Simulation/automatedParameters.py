@@ -26,9 +26,13 @@ def getOutputDirectory():
   Path(outputDirectory+'/figures').mkdir(parents=True, exist_ok=True)
   return outputDirectory, cwd
 
-
+def getTimeSeries():
+  timeSeries = np.array(range(0, p.totalSimulationTime+p.tau, p.tau))
+  return timeSeries
+  
 def generate():
   outputDirectory, cwd = getOutputDirectory()
   theta = getTheta()
   randomGenerator = setSeed()
-  return outputDirectory, cwd, randomGenerator, theta
+  timeSeries = getTimeSeries()
+  return outputDirectory, cwd, randomGenerator, theta, timeSeries
