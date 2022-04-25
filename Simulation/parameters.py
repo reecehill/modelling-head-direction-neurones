@@ -95,7 +95,7 @@ B = (f_max - A)/np.exp(K)
 # ---------------------------
 
 # NOTE: penaltyForMagnitude = lambda in paper, but the word is reserved in Python.
-penaltyForMagnitude_0 = 10**(-2)
+penaltyForMagnitude_0 = 10**(-5)
 
 # Taken from Figure 5
 epsilon = 0.1

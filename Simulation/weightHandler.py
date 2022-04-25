@@ -94,7 +94,7 @@ def generateWeightsForOneNeurone(neurone):
     filename = p.outputDirectory+'/../out.csv'
     data = np.genfromtxt(filename, delimiter=',', dtype=complex).T[0]
     plt.suptitle(neurone.theta_0)
-    plt.plot(p.thetaSeries, np.abs(weightsFft.real), label='weightsFft')
+    plt.plot(p.thetaSeries, np.abs(weightsFft.real), label='weightsFft', marker='o')
     plt.plot(p.thetaSeries, np.abs(data.real), label='output')
     plt.legend()
     plt.show()
