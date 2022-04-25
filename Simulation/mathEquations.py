@@ -7,10 +7,10 @@ def getTuningCurve(theta_0):
   # See: Equation 1
   
   # For every possible theta, get the difference between it and this neurone's preferred angle.
-  anglesInDegrees = p.thetaSeries - theta_0
+  anglesInDegrees = np.subtract(p.thetaSeries,theta_0)
   # Convert angles to radians as required by np.cos()
   anglesInRadians = np.radians(anglesInDegrees)
-  
+
   f = p.A + p.B*np.exp(p.K * np.cos(anglesInRadians))
   return f
 
@@ -29,7 +29,7 @@ def getSigmoid(x):
 # Is the inverse of getSigmoid().
 def getInverseSigmoid(sigma):
   # Mathematically derived, by Parrivesh, from Equation 4.
-  x = 1/p.b * np.log( np.exp(( sigma/p.alpha )**(1/p.beta)) -1) - p.c
+  x = 1/p.b * np.log( np.exp( (sigma/p.alpha)**(1/p.beta) ) -1) - p.c
   return x
 
 def getDuDt(u, t, w, f):
