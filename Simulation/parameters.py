@@ -13,7 +13,7 @@ import numpy as np
 generateWeightsMethod = 'templateNeurone'
 
 # Network size
-numberOfUnits = 361
+numberOfUnits = (360) + 1
 
 
 f_max = 40 #Hz
@@ -26,7 +26,7 @@ actualTheta = 0
 tau = 10 #msec
 
 # Total time to simulate for
-totalSimulationTime = 400 #msec
+totalSimulationTime = 800  # msec
 
 # ----------END------------
 # SIMULATION PARAMETERS
