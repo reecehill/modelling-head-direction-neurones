@@ -10,7 +10,7 @@ from shutil import copyfile
 from scipy.integrate import ode
 import numpy as np
 
-closeAllFigures()
+closeAllFigures('all')
 
 figure1 = pf.plotTuningCurve()
 
@@ -23,13 +23,13 @@ figure3 = pf.plotSampledNeuroneWeightDistributions(neuronalPopulation)
 # Gather the neuronal population's weights into a matrix.
 weightsForAllNeurones = neuronalPopulation.getAllWeights()
 figure2 = pf.plotWeightDistribution(weightsForAllNeurones)
-
+test = pf.plotTest(neuronalPopulation)
 
 # Inject noise into this neuronal population
 weightsForAllNeurones_Noise = wh.injectNoise(weightsForAllNeurones)
 figure3 = pf.plotWeightDistribution(weightsForAllNeurones_Noise, hasNoise=True)
 
-test = pf.plotTest(neuronalPopulation)
+
 
 
 # Copy parameters.py to output directory.
