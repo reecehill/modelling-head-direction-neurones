@@ -121,15 +121,16 @@ def plotTest(neuronalPopulation):
   plt.title('for a population with weights configured for theta=%d' %
             (p.actualTheta))
   initialF = p.randomGenerator.uniform(
-      low=0, high=p.f_max, size=p.numberOfUnits)
-  initialF = e.getTuningCurve(theta_0=90)
+      low=0, high=500, size=p.numberOfUnits)
+  initialF = e.getTuningCurve(theta_0=100)
   initialU = e.getU(initialF)
   w = neuronalPopulation.getAllWeights()
-  sol = solve_ivp(e.getDuDt, (p.timeSeries[0], p.timeSeries[-1]), initialU, args=[w, initialF])
+  sol = solve_ivp(e.getDuDt, (p.timeSeries[0], p.timeSeries[-1]), initialU, args=[w, initialF], t_eval=p.timeSeries)
   uAtTimeT = sol.y.T
-  fAtTimeT = e.getF(uAtTimeT)
-  for fIndex, f in enumerate(fAtTimeT):
-    plt.plot(p.thetaSeries, f, p.timeSeries[fIndex],  color='black')
+  fAtTimeT = e.getSigmoid(uAtTimeT)
+  for uIndex, u in enumerate(uAtTimeT):
+    plt.plot(p.thetaSeries, e.getSigmoid(u),
+             p.timeSeries[uIndex],  color='black')
   
   plt.savefig(p.outputDirectory +
               '/figures/dudt-over-time-NOT-CORRECT.svg', dpi=350)
