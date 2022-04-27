@@ -5,15 +5,15 @@ import parameters as p
 
 
 def setSeed():
-  seed = 1
+  seed = 5
   randomGenerator = np.random.default_rng(seed)
   return randomGenerator
 
-def getTheta():
+def getThetaSeries():
   # NOTE: This differs to Parrivesh's code, where they multiply by pi/180 after linspace to get it in radians.
   linearlySpacedTheta = np.linspace(-180, 180, p.numberOfUnits)
-  theta = linearlySpacedTheta
-  return theta
+  thetaSeries = linearlySpacedTheta
+  return thetaSeries
 
 
 def getOutputDirectory():
@@ -26,9 +26,13 @@ def getOutputDirectory():
   Path(outputDirectory+'/figures').mkdir(parents=True, exist_ok=True)
   return outputDirectory, cwd
 
-
+def getTimeSeries():
+  timeSeries = np.array(range(0, p.totalSimulationTime+p.tau, p.tau))
+  return timeSeries
+  
 def generate():
   outputDirectory, cwd = getOutputDirectory()
-  theta = getTheta()
+  thetaSeries = getThetaSeries()
   randomGenerator = setSeed()
-  return outputDirectory, cwd, randomGenerator, theta
+  timeSeries = getTimeSeries()
+  return outputDirectory, cwd, randomGenerator, thetaSeries, timeSeries

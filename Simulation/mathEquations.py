@@ -7,10 +7,10 @@ def getTuningCurve(theta_0):
   # See: Equation 1
   
   # For every possible theta, get the difference between it and this neurone's preferred angle.
-  anglesInDegrees = p.theta - theta_0
+  anglesInDegrees = np.subtract(p.thetaSeries,theta_0)
   # Convert angles to radians as required by np.cos()
   anglesInRadians = np.radians(anglesInDegrees)
-  
+
   f = p.A + p.B*np.exp(p.K * np.cos(anglesInRadians))
   return f
 
@@ -20,23 +20,24 @@ def getTuningCurve(theta_0):
 # Is an adaptation of the conventional sigmoid function, for reasons explained in section 4.2
 def getSigmoid(x):
   # See: Equation 4
-  sigma = p.alpha * np.log( (1 + np.exp(p.b * (x + p.c))) ** p.beta)
+  sigma = p.alpha * np.log( (1 + np.exp(p.b * (x + p.c)))) ** p.beta
   return sigma
 
 
 
 # Returns the input given to a single neuronal input (neurone), x, given its output, sigma.
 # Is the inverse of getSigmoid().
-def getInverseSigmoid(sigmoid):
+def getInverseSigmoid(sigma):
   # Mathematically derived, by Parrivesh, from Equation 4.
-  x = 1/p.b * np.log( np.exp(( sigmoid/p.alpha )**(1/p.beta)) -1) - p.c
+  x = 1/p.b * np.log( np.exp( (sigma/p.alpha)**(1/p.beta) ) -1) - p.c
   return x
 
-def getDuDt(u, w):
+def getDuDt(t, u, w):
   # TODO: Confirm, is f() the sigmoid function here? This is not clear in the paper.
   # See: Equation 2. 
+  
   f = getSigmoid(u);
-  duDt = 1/p.tau * ( -u + w*f )
+  duDt = 1/p.tau * ( -u + np.matmul(w,f) )
   return duDt
 
 
