@@ -8,4 +8,5 @@ def generatePopulation():
     neuronalPopulation = NeuronalPopulation()
     
     np.savetxt(p.outputDirectory+'/noiseless-weights.csv', neuronalPopulation.getAllWeights(), delimiter=',')
+    
     return neuronalPopulation

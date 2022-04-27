@@ -25,20 +25,30 @@ figure2 = pf.plotSampledNeuroneWeightDistributions(neuronalPopulation)
 # Plot matrix of noiseless weights
 figure3 = pf.plotWeightDistribution(neuronalPopulation.getAllWeights())
 figure4 = pf.solveDuDt(neuronalPopulation)
+print("Neuronal Population (noiseless) completed: "+str(time.time() - start)+' seconds')
+
+
+
 
 # Copy the neuronal population, and inject noise into its weights
 neuronalPopulation_noise = deepcopy(neuronalPopulation).injectNoiseIntoWeights(meanOfNoise=0)
 figure5 = pf.plotWeightDistribution(neuronalPopulation_noise.getAllWeights(), hasNoise=True)
 figure6 = pf.solveDuDt(neuronalPopulation_noise)
+print("Neuronal Population (noisy) completed: " +
+      str(time.time() - start)+' seconds')
 
 # Now begin to make the model dynamic - add the odd weights to noiseless population.
 neuronalPopulation_dynamic = deepcopy(neuronalPopulation).setupOddWeights()
 figure7 = pf.plotWeightDistribution(
     neuronalPopulation_dynamic.getAllWeights())
 figure8 = pf.solveDuDt(neuronalPopulation_dynamic)
+print("Neuronal Population (dynamic, sinusoidal) completed: " +
+      str(time.time() - start)+' seconds')
+
+
 
 # Copy parameters.py to output directory.
 copyfile(p.cwd+'/parameters.py', str(p.outputDirectory)+'/parameters.py')
-print("Finished, time elapsed: "+str(time.time() - start)+' seconds')
+print("Finished, total time elapsed: "+str(time.time() - start)+' seconds')
 print("Now showing graphs...")
 showFigures()
