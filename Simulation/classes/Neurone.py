@@ -22,3 +22,7 @@ class Neurone:
   def rollWeights(self, byAmount):
     self.evenWeights = np.roll(self.evenWeights, byAmount)
     return self
+  
+  def setOddWeights(self):
+    self.oddWeights = e.getOddWeights(self.evenWeights)
+    return self

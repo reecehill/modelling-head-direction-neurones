@@ -113,7 +113,7 @@ def plotWeightDistribution(weights, hasNoise=False):
   return fig
 
 
-def plotTest(neuronalPopulation):
+def solveDuDt(neuronalPopulation):
     # Solve for time
   fig = plt.figure()
   ax = fig.gca()
@@ -147,7 +147,7 @@ def plotTest(neuronalPopulation):
   uActivityOfAllNeurones = e.getU(firingActivityOfAllNeurones)
   sol = solve_ivp(e.getDuDt, (t0, tf), uActivityOfAllNeurones, args=[
                   neuronalPopulation.getAllWeights()], t_eval=p.timeSeries)
-  print('l')
+
   usAtTimeT = sol.y.T
   fsAtTimeT = e.getF(usAtTimeT)
   plt.plot(p.timeSeries, fsAtTimeT)
@@ -163,7 +163,7 @@ def plotTest(neuronalPopulation):
 
   # Labelling Z-Axis
   ax.set_ylabel('Population of HD Cells')
-  plt.xlim(0, 40)
+  #plt.xlim(0, 40)
 
   for timeIndex, fAtTimeT in enumerate(fsAtTimeT[0:len(fsAtTimeT):10]):
     x, y, z = p.thetaSeries, fAtTimeT, p.timeSeries[timeIndex*10]
@@ -173,3 +173,4 @@ def plotTest(neuronalPopulation):
   ax.invert_zaxis()
   plt.savefig(p.outputDirectory +
               '/figures/dudt-over-time.svg', dpi=350)
+  return fig

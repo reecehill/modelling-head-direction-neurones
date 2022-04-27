@@ -27,7 +27,7 @@ actualTheta = 0
 tau = 10 #msec
 
 # Total time to simulate for
-totalSimulationTime = 800  # msec
+totalSimulationTime = 8000  # msec
 
 
 # Possible options
@@ -35,7 +35,7 @@ totalSimulationTime = 800  # msec
 # tuningCurve
 # steadyState
 # slightlyAwayFromSteadyState
-initialCondition = 'noise'
+initialCondition = 'tuningCurve'
 
 # ----------END------------
 # SIMULATION PARAMETERS
@@ -107,7 +107,18 @@ B = (f_max - A)/np.exp(K)
 penaltyForMagnitude_0 = 1e-03
 
 # Taken from Figure 5
-epsilon = 0.1
+epsilon = 0.06
+
+# Used to generate odd weights
+# Options:
+# sinusoid
+oddWeightFunction = 'sinusoid'
+
+#TODO: Is this the same as alpha as defined in Figure 4>
+alphaSinusoid = 0.00201
+
+# Used for odd weights
+gamma = 1
 
 # ---------------------------
 # WEIGHT DISTRIBUTION PARAMETERS

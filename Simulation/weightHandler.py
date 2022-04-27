@@ -29,7 +29,7 @@ def generateWeightsForOneNeurone(neurone):
     firingRatesByThetaFft_squared = np.square(
         np.abs(firingRatesByThetaFft, dtype=np.float64))
     firingRatesByThetaFft_squared_max = firingRatesByThetaFft_squared.max()
-    
+
     #firingRatesByThetaFft_squared_max = 5.952236665565973e+04
     # Calculate the amount by which large weights will be penalised.
     penaltyForMagnitude = p.penaltyForMagnitude_0 * \
@@ -47,7 +47,7 @@ def generateWeightsForOneNeurone(neurone):
     # Convert weights into ?normal domain.
     # TODO: Notice that we get rid of the imaginary part. Is this right? It matches result of Parrivesh, so assume it's a difference in Python.
     # Scaling factor weights*N
-    
+
     # NOTE: Scaling factor is removed and yet it matches data of Markus.
     weights = (fft.ifft(weightsFft, axis=0))
 
@@ -108,12 +108,3 @@ def generateWeightsForOneNeurone(neurone):
             exit()
 
     return weights.real
-
-
-def injectNoise(weightsForAllNeurones):
-    meanOfNoise = 0
-    stdOfNoise = p.epsilon * np.mean(np.abs(weightsForAllNeurones))
-    noise = p.randomGenerator.normal(
-        loc=meanOfNoise, scale=stdOfNoise, size=weightsForAllNeurones.shape)
-    weightsForAllNeurones_Noise = weightsForAllNeurones + noise
-    return weightsForAllNeurones_Noise

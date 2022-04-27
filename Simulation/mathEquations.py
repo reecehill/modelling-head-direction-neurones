@@ -1,6 +1,7 @@
 import numpy as np
 import parameters as p
 
+
 # Returns firing rate, f, as a function of head direction, theta.
 # It has a Guassian-like shape.
 def getTuningCurve(theta_0):
@@ -54,3 +55,14 @@ def getU(f):
   # TODO: Returns the "average net inputs/synaptic currents" for neurones that share the same preferred direction. Is this true?
   u = getInverseSigmoid(f)
   return u
+
+
+def someFunctionOfEvenWeights(evenWeights):
+  #TODO: How to differentiate weights?
+  if(p.oddWeightFunction == 'sinusoid'):
+    return p.alphaSinusoid*(np.sin(np.radians(p.thetaSeries)))
+
+def getOddWeights(evenWeights):
+  # If we can plot evenWeights(theta), then surely evenWeights(theta)' is possible?
+  oddWeights = someFunctionOfEvenWeights(evenWeights)
+  return oddWeights
