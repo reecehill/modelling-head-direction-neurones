@@ -9,11 +9,12 @@ import numpy as np
 # Weights for each neurone can be generated in one of two ways:
 # 1) 'templateNeurone': By copying the weights of a neurone with theta_0=0 and then "rolling" the weights. This leads to a matrix diagonal that is equal.
 # 2) 'independentNeurone': By generating weights between neurones independent of each other.
-# NOTE: Option 2 leads to bizarre behaviour.  
+# NOTE: Option 2 leads to bizarre behaviour. (i.e., a weight matrix that is not equal along the diagonal)
 generateWeightsMethod = 'templateNeurone'
 
 # Network size
-numberOfUnits = (360) + 1
+# +1 is added here to account for indexing differences between Matlab and Python.
+numberOfUnits = (36)+1
 
 
 f_max = 40 #Hz
@@ -27,6 +28,14 @@ tau = 10 #msec
 
 # Total time to simulate for
 totalSimulationTime = 800  # msec
+
+
+# Possible options
+# noise
+# tuningCurve
+# steadyState
+# slightlyAwayFromSteadyState
+initialCondition = 'noise'
 
 # ----------END------------
 # SIMULATION PARAMETERS
@@ -95,7 +104,7 @@ B = (f_max - A)/np.exp(K)
 # ---------------------------
 
 # NOTE: penaltyForMagnitude = lambda in paper, but the word is reserved in Python.
-penaltyForMagnitude_0 = 10**(-5)
+penaltyForMagnitude_0 = 1e-03
 
 # Taken from Figure 5
 epsilon = 0.1

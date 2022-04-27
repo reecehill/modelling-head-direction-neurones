@@ -10,11 +10,15 @@ class Neurone:
     self.oddWeights = np.zeros(self.evenWeights.shape)
     
     
-    # Create a matrix of zeros. The first dimension is the time (t), and the second are the weights (even and odd), the third are respective matrices. 
-    self.firingActivity = np.zeros(
-        (len(p.timeSeries), 2, self.evenWeights.size))
-    self.firingActivity[0][0] = self.evenWeights
-    self.firingActivity[0][1] = self.oddWeights
+    # Create a vector of zeros. This stores the f (firing rate, in Hz) of each neurone over time.
+    self.firingActivity = np.zeros(p.timeSeries.size)
+    
+    # Average net input received by neurone, over time.
+    self.uActivity = np.zeros(p.timeSeries.size)
 
   def getWeights(self):
     return self.evenWeights + self.oddWeights
+  
+  def rollWeights(self, byAmount):
+    self.evenWeights = np.roll(self.evenWeights, byAmount)
+    return self

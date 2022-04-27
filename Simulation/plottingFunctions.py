@@ -10,6 +10,14 @@ import weightHandler as wh
 mpl.rcParams['savefig.dpi'] = 1000
 mpl.rcParams['figure.figsize'] = (19, 10)
 
+
+def plotSigmoidFunction():
+  uValues = np.linspace(-1, 1.5, 300)
+  fig = plt.figure()
+  plt.plot(uValues, e.getSigmoid(uValues))
+  return fig
+
+
 def plotTuningCurve():
   # To replicate Figure 2.
   # K = 8.08
@@ -82,7 +90,7 @@ def plotWeightDistribution(weights, hasNoise=False):
       'location': int(i),
       'label': str(np.ceil(p.thetaSeries[int(i)]))+'°'
   } for i in np.linspace(0, len(p.thetaSeries)-1, 9)]
-  ax.invert_yaxis()
+  #ax.invert_yaxis()
 
   ax.set_xticks([tick['location'] for tick in ticks],
                 [tick['label'] for tick in ticks])
@@ -93,11 +101,12 @@ def plotWeightDistribution(weights, hasNoise=False):
 
   fig.colorbar(im)
   if(hasNoise):
-    plt.title(r"K=%d, A=%d, B=%d, " "$\lambda$" "=%f" % (p.K, p.A, p.B, p.penaltyForMagnitude_0))
+    plt.title(r"N=%d, K=%d, A=%d, B=%d, " "$\lambda$" "=%f" %
+              (p.numberOfUnits, p.K, p.A, p.B, p.penaltyForMagnitude_0))
     plt.suptitle("Strength of connections (weights) between neurones (noisy)")
     plt.savefig(p.outputDirectory+'/figures/weights-heatmap-noisy.svg', dpi=350)
   else:
-    plt.title(r"K=%d, A=%d, B=%d" % (p.K, p.A, p.B))
+    plt.title(r"N=%d, K=%d, A=%d, B=%d" % (p.numberOfUnits, p.K, p.A, p.B))
     plt.suptitle("Strength of connections (weights) between neurones (noiseless)")
     plt.savefig(p.outputDirectory + '/figures/weights-heatmap-noiseless.svg', dpi=350)
   
@@ -107,30 +116,60 @@ def plotWeightDistribution(weights, hasNoise=False):
 def plotTest(neuronalPopulation):
     # Solve for time
   fig = plt.figure()
-  ax = fig.gca(projection='3d')
+  ax = fig.gca()
 
-    # Labelling X-Axis
-  ax.set_xlabel('Theta')
+  # Labelling X-Axis
+  ax.set_xlabel('Time')
 
   # Labelling Y-Axis
-  ax.set_ylabel('Hz')
+  ax.set_ylabel('Neurones firing rate (Hz)')
+  # Labelling Z-Axis
+  #ax.set_zlabel('Time')
+  plt.suptitle('Firing activity of neuronal population over time')
+  t0 = p.timeSeries[0].astype('float64')
+  tf = p.timeSeries[-1].astype('float64')
+
+  if(p.initialCondition == 'noise'):
+    firingActivityOfAllNeurones = p.randomGenerator.normal(
+        loc=10, scale=3, size=p.numberOfUnits)
+
+  elif(p.initialCondition == 'tuningCurve'):
+    firingActivityOfAllNeurones = e.getTuningCurve(theta_0=90)
+
+  elif(p.initialCondition == 'steadyState'):
+    firingActivityOfAllNeurones = np.ones(p.numberOfUnits) * e.getF(-0.4635)
+
+  elif(p.initialCondition == 'slightlyAwayFromSteadyState'):
+    firingActivityOfAllNeurones = np.ones(p.numberOfUnits) * e.getF(-0.6)
+
+  firingActivityOfAllNeurones = np.abs(firingActivityOfAllNeurones)
+
+  uActivityOfAllNeurones = e.getU(firingActivityOfAllNeurones)
+  sol = solve_ivp(e.getDuDt, (t0, tf), uActivityOfAllNeurones, args=[
+                  neuronalPopulation.getAllWeights()], t_eval=p.timeSeries)
+  print('l')
+  usAtTimeT = sol.y.T
+  fsAtTimeT = e.getF(usAtTimeT)
+  plt.plot(p.timeSeries, fsAtTimeT)
+
+  fig = plt.figure()
+  ax = fig.gca(projection="3d")
+  # Labelling X-Axis
+  ax.set_xlabel('Firing rate $f$ (Hz)')
+
+  # Labelling Y-Axis
+  ax.set_zlabel('Time (ms)')
+  ax.yaxis.set_major_formatter('{x:1.0f}°')
 
   # Labelling Z-Axis
-  ax.set_zlabel('Time')
-  plt.suptitle('du/dt over time')
-  plt.title('for a population with weights configured for theta=%d' %
-            (p.actualTheta))
-  initialF = p.randomGenerator.uniform(
-      low=0, high=500, size=p.numberOfUnits)
-  initialF = e.getTuningCurve(theta_0=100)
-  initialU = e.getU(initialF)
-  w = neuronalPopulation.getAllWeights()
-  sol = solve_ivp(e.getDuDt, (p.timeSeries[0], p.timeSeries[-1]), initialU, args=[w, initialF], t_eval=p.timeSeries)
-  uAtTimeT = sol.y.T
-  fAtTimeT = e.getSigmoid(uAtTimeT)
-  for uIndex, u in enumerate(uAtTimeT):
-    plt.plot(p.thetaSeries, e.getSigmoid(u),
-             p.timeSeries[uIndex],  color='black')
-  
+  ax.set_ylabel('Population of HD Cells')
+  plt.xlim(0, 40)
+
+  for timeIndex, fAtTimeT in enumerate(fsAtTimeT[0:len(fsAtTimeT):10]):
+    x, y, z = p.thetaSeries, fAtTimeT, p.timeSeries[timeIndex*10]
+    plt.plot(y, x, z)
+  #yValues = p.thetaSeries[np.argmax(fAtTimeT, axis=1)]
+  ax.invert_xaxis()
+  ax.invert_zaxis()
   plt.savefig(p.outputDirectory +
-              '/figures/dudt-over-time-NOT-CORRECT.svg', dpi=350)
+              '/figures/dudt-over-time.svg', dpi=350)

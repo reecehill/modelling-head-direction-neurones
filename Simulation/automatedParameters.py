@@ -5,13 +5,13 @@ import parameters as p
 
 
 def setSeed():
-  seed = 1
+  seed = 5
   randomGenerator = np.random.default_rng(seed)
   return randomGenerator
 
 def getThetaSeries():
   # NOTE: This differs to Parrivesh's code, where they multiply by pi/180 after linspace to get it in radians.
-  linearlySpacedTheta = np.linspace(0, 359, p.numberOfUnits)
+  linearlySpacedTheta = np.linspace(-180, 180, p.numberOfUnits)
   thetaSeries = linearlySpacedTheta
   return thetaSeries
 

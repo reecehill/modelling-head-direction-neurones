@@ -32,11 +32,11 @@ def getInverseSigmoid(sigma):
   x = 1/p.b * np.log( np.exp( (sigma/p.alpha)**(1/p.beta) ) -1) - p.c
   return x
 
-def getDuDt(u, t, w, f):
+def getDuDt(t, u, w):
   # TODO: Confirm, is f() the sigmoid function here? This is not clear in the paper.
   # See: Equation 2. 
   
-  #f = getSigmoid(u);
+  f = getSigmoid(u);
   duDt = 1/p.tau * ( -u + np.matmul(w,f) )
   return duDt
 

@@ -7,11 +7,12 @@ import weightHandler as wh
 from matplotlib.pyplot import show as showFigures
 from matplotlib.pyplot import close as closeAllFigures
 from shutil import copyfile
-from scipy.integrate import ode
 import numpy as np
+import mathEquations as e
 
 closeAllFigures('all')
 
+figure0 = pf.plotSigmoidFunction()
 figure1 = pf.plotTuningCurve()
 
 # Generate a population of neurones with weights as if there is no head movement (θ_odd=0) 
@@ -22,6 +23,7 @@ figure3 = pf.plotSampledNeuroneWeightDistributions(neuronalPopulation)
 
 # Gather the neuronal population's weights into a matrix.
 weightsForAllNeurones = neuronalPopulation.getAllWeights()
+
 figure2 = pf.plotWeightDistribution(weightsForAllNeurones)
 test = pf.plotTest(neuronalPopulation)
 
