@@ -113,6 +113,20 @@ def plotWeightDistribution(weights, hasNoise=False):
   return fig
 
 
+def plotZerothNeuroneOddAndEvenWeights(neuronalPopulation_dynamic):
+    fig, ax = plt.subplots(nrows=3, ncols=1, squeeze=True)
+    for neurone in neuronalPopulation_dynamic.neurones:
+      if(neurone.theta_0 == 0):
+        ax[0].set_title('A neurone\'s evenWeights')
+        ax[0].plot(p.thetaSeries, neurone.evenWeights)
+
+        ax[1].set_title('A neurone\'s oddWeights')
+        ax[1].plot(p.thetaSeries, neurone.oddWeights)
+
+        ax[2].set_title('A neurone\'s allWeights')
+        ax[2].plot(p.thetaSeries, neurone.getWeights())
+    return fig
+
 def solveDuDt(neuronalPopulation):
     # Solve for time
   fig = plt.figure()
@@ -145,10 +159,11 @@ def solveDuDt(neuronalPopulation):
   firingActivityOfAllNeurones = np.abs(firingActivityOfAllNeurones)
 
   uActivityOfAllNeurones = e.getU(firingActivityOfAllNeurones)
-  sol = solve_ivp(e.getDuDt, (t0, tf), uActivityOfAllNeurones, args=[
-                  neuronalPopulation.getAllWeights()], t_eval=p.timeSeries)
+  neuronalWeights = neuronalPopulation.getAllWeights()
+  sol = solve_ivp(e.getDuDt, (t0, tf), uActivityOfAllNeurones,
+                  args=[neuronalWeights], dense_output=True)
 
-  usAtTimeT = sol.y.T
+  usAtTimeT = np.transpose(sol.sol(p.timeSeries))
   fsAtTimeT = e.getF(usAtTimeT)
   plt.plot(p.timeSeries, fsAtTimeT)
 

@@ -39,9 +39,10 @@ print("Neuronal Population (noisy) completed: " +
 
 # Now begin to make the model dynamic - add the odd weights to noiseless population.
 neuronalPopulation_dynamic = deepcopy(neuronalPopulation).setupOddWeights()
-figure7 = pf.plotWeightDistribution(
+figure7 = pf.plotZerothNeuroneOddAndEvenWeights(neuronalPopulation_dynamic)
+figure8 = pf.plotWeightDistribution(
     neuronalPopulation_dynamic.getAllWeights())
-figure8 = pf.solveDuDt(neuronalPopulation_dynamic)
+figure9 = pf.solveDuDt(neuronalPopulation_dynamic)
 print("Neuronal Population (dynamic, sinusoidal) completed: " +
       str(time.time() - start)+' seconds')
 

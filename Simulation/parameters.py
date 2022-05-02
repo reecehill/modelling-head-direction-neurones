@@ -112,13 +112,14 @@ epsilon = 0.06
 # Used to generate odd weights
 # Options:
 # sinusoid
-oddWeightFunction = 'sinusoid'
+# derivative
+oddWeightFunction = 'derivative'
 
 #TODO: Is this the same as alpha as defined in Figure 4>
-alphaSinusoid = 0.00201
+alphaSinusoid = 0.000201
 
 # Used for odd weights
-gamma = 1
+gamma = np.rad2deg(-0.063)
 
 # ---------------------------
 # WEIGHT DISTRIBUTION PARAMETERS

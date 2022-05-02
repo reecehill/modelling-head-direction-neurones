@@ -2,11 +2,16 @@ import numpy as np
 import mathEquations as e
 import parameters as p
 import weightHandler as wh
+import matplotlib.pyplot as plt
+
+
 class Neurone:
-  def __init__(self, theta_0):
+  def __init__(self, theta_0, isTemporaryNeurone=False):
+    self.isTemporaryNeurone = isTemporaryNeurone
     self.theta_0 = theta_0
     self.tuningCurve = e.getTuningCurve(theta_0=theta_0)
     self.evenWeights = wh.generateWeightsForOneNeurone(neurone=self)
+    # Begin with oddWeights as zeros, and get them later.
     self.oddWeights = np.zeros(self.evenWeights.shape)
     
     
@@ -23,6 +28,6 @@ class Neurone:
     self.evenWeights = np.roll(self.evenWeights, byAmount)
     return self
   
-  def setOddWeights(self):
-    self.oddWeights = e.getOddWeights(self.evenWeights)
+  def setOddWeights(self, temporaryNeurone={}):
+    self.oddWeights = e.getOddWeights(self, temporaryNeurone)
     return self

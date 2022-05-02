@@ -5,7 +5,8 @@ from classes.Neurone import Neurone
 
 
 class NeuronalPopulation:
-    def __init__(self):
+    def __init__(self, thetaOffset=0):
+        # ThetaOffset is used to add gamma to generate a temporary population.
         # It is possible to generate neurones in one of two ways. See parameters.py for more information.
         if(p.generateWeightsMethod == 'independentNeurone'):
             # Get each neurone's weight independently by looping through all theta values.
@@ -14,7 +15,7 @@ class NeuronalPopulation:
 
         elif(p.generateWeightsMethod == 'templateNeurone'):
             # Instantiate a neurone with preferred direction 0, then roll its weights to offset them according to thetaIndex.
-            self.neurones = np.array([Neurone(theta_0=5)
+            self.neurones = np.array([Neurone(theta_0=5+thetaOffset)
                                      for theta in p.thetaSeries])
 
             for neuroneIndex, neurone in enumerate(self.neurones):
@@ -24,9 +25,8 @@ class NeuronalPopulation:
     def getAllWeights(self):
         # Returns w(θ,t)
         # See: Equation 2.
-        evenWeights = [neurone.evenWeights for neurone in self.neurones]
-        oddWeights = [neurone.oddWeights for neurone in self.neurones]
-        summedWeights = np.add(evenWeights, oddWeights)
+        summedWeights = [np.add(neurone.evenWeights, neurone.oddWeights)
+                         for neurone in self.neurones]
         return np.array(summedWeights)
 
     def injectNoiseIntoWeights(self, meanOfNoise):
@@ -38,6 +38,12 @@ class NeuronalPopulation:
         return self
 
     def setupOddWeights(self):
-        for neurone in self.neurones:
-            neurone.setOddWeights()
+        if(p.oddWeightFunction=='sinusoid'):
+            [neurone.setOddWeights() for neurone in self.neurones]
+
+        elif(p.oddWeightFunction == 'derivative'):
+            temporaryNeuronalPopulation = NeuronalPopulation(
+                thetaOffset=p.gamma)
+            [neurone.setOddWeights(temporaryNeuronalPopulation.neurones[neuroneIndex]) for neuroneIndex, neurone in enumerate(self.neurones)]
+       
         return self

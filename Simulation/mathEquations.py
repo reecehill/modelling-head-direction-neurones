@@ -1,6 +1,7 @@
 import numpy as np
+from classes.Neurone import Neurone
 import parameters as p
-
+from weightHandler import generateWeightsForOneNeurone
 
 # Returns firing rate, f, as a function of head direction, theta.
 # It has a Guassian-like shape.
@@ -56,13 +57,14 @@ def getU(f):
   u = getInverseSigmoid(f)
   return u
 
-
-def someFunctionOfEvenWeights(evenWeights):
-  #TODO: How to differentiate weights?
+def getOddWeights(neurone, temporaryNeurone={}):
   if(p.oddWeightFunction == 'sinusoid'):
     return p.alphaSinusoid*(np.sin(np.radians(p.thetaSeries)))
+  
+  elif(p.oddWeightFunction == 'derivative'):
+    # Equation 11: W(0) + gamma*W'(0) ~ W(0+gamma)
+    # Therefore, gamma*W'(0) ~ (W(0+gamma) - W(0)) 
+    # Or, gamma*oddWeights ~ (intermediateWeights - evenWeights)
 
-def getOddWeights(evenWeights):
-  # If we can plot evenWeights(theta), then surely evenWeights(theta)' is possible?
-  oddWeights = someFunctionOfEvenWeights(evenWeights)
-  return oddWeights
+    # Perform equation 11.
+    return temporaryNeurone.getWeights()-neurone.evenWeights
