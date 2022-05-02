@@ -24,7 +24,7 @@ figure2 = pf.plotSampledNeuroneWeightDistributions(neuronalPopulation)
 
 # Plot matrix of noiseless weights
 figure3 = pf.plotWeightDistribution(neuronalPopulation.getAllWeights())
-figure4 = pf.solveDuDt(neuronalPopulation)
+figure4 = pf.solveDuDt(neuronalPopulation, title="static model without noise")
 print("Neuronal Population (noiseless) completed: "+str(time.time() - start)+' seconds')
 
 
@@ -33,7 +33,7 @@ print("Neuronal Population (noiseless) completed: "+str(time.time() - start)+' s
 # Copy the neuronal population, and inject noise into its weights
 neuronalPopulation_noise = deepcopy(neuronalPopulation).injectNoiseIntoWeights(meanOfNoise=0)
 figure5 = pf.plotWeightDistribution(neuronalPopulation_noise.getAllWeights(), hasNoise=True)
-figure6 = pf.solveDuDt(neuronalPopulation_noise)
+figure6 = pf.solveDuDt(neuronalPopulation_noise, title="static model with noise")
 print("Neuronal Population (noisy) completed: " +
       str(time.time() - start)+' seconds')
 
@@ -42,7 +42,7 @@ neuronalPopulation_dynamic = deepcopy(neuronalPopulation).setupOddWeights()
 figure7 = pf.plotZerothNeuroneOddAndEvenWeights(neuronalPopulation_dynamic)
 figure8 = pf.plotWeightDistribution(
     neuronalPopulation_dynamic.getAllWeights())
-figure9 = pf.solveDuDt(neuronalPopulation_dynamic)
+figure9 = pf.solveDuDt(neuronalPopulation_dynamic, title="dynamic model")
 print("Neuronal Population (dynamic, sinusoidal) completed: " +
       str(time.time() - start)+' seconds')
 

@@ -14,17 +14,16 @@ generateWeightsMethod = 'templateNeurone'
 
 # Network size
 # +1 is added here to account for indexing differences between Matlab and Python.
+# NOTE: To copy the results of the paper, ensure this is set to 37. Results are bizarre otherwise.
 numberOfUnits = (36)+1
 
 
 f_max = 40 #Hz
 
-# Actual theta of current head direction (in degrees)
-actualTheta = 0
 
 # Taken from Section 3, Basic Dynamic Model, in-text.
 # Time steps in
-tau = 10 #msec
+tau = 10  # msec
 
 # Total time to simulate for
 totalSimulationTime = 8000  # msec

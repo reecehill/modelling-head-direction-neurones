@@ -127,9 +127,10 @@ def plotZerothNeuroneOddAndEvenWeights(neuronalPopulation_dynamic):
         ax[2].plot(p.thetaSeries, neurone.getWeights())
     return fig
 
-def solveDuDt(neuronalPopulation):
+def solveDuDt(neuronalPopulation, title=""):
     # Solve for time
   fig = plt.figure()
+  plt.suptitle('Firing activity (f) of each neurone in the population over time')
   ax = fig.gca()
 
   # Labelling X-Axis
@@ -139,7 +140,7 @@ def solveDuDt(neuronalPopulation):
   ax.set_ylabel('Neurones firing rate (Hz)')
   # Labelling Z-Axis
   #ax.set_zlabel('Time')
-  plt.suptitle('Firing activity of neuronal population over time')
+  
   t0 = p.timeSeries[0].astype('float64')
   tf = p.timeSeries[-1].astype('float64')
 
@@ -168,6 +169,8 @@ def solveDuDt(neuronalPopulation):
   plt.plot(p.timeSeries, fsAtTimeT)
 
   fig = plt.figure()
+  plt.suptitle('Population firing activity over time - ' + title + "\n" r"N=%d, K=%d, A=%d, B=%d, " "$\lambda$" "=%f" %
+   (p.numberOfUnits, p.K, p.A, p.B, p.penaltyForMagnitude_0))
   ax = fig.gca(projection="3d")
   # Labelling X-Axis
   ax.set_xlabel('Firing rate $f$ (Hz)')
@@ -179,10 +182,11 @@ def solveDuDt(neuronalPopulation):
   # Labelling Z-Axis
   ax.set_ylabel('Population of HD Cells')
   #plt.xlim(0, 40)
-
-  for timeIndex, fAtTimeT in enumerate(fsAtTimeT[0:len(fsAtTimeT):10]):
-    x, y, z = p.thetaSeries, fAtTimeT, p.timeSeries[timeIndex*10]
-    plt.plot(y, x, z)
+  
+  tsToSample = np.linspace(0, len(p.timeSeries)-1, 5).astype('int')
+  for tToSample in tsToSample:
+    x, y, z,  = p.thetaSeries, fsAtTimeT[tToSample], p.timeSeries[tToSample]
+    plt.plot(y, x, z, color='black')
   #yValues = p.thetaSeries[np.argmax(fAtTimeT, axis=1)]
   ax.invert_xaxis()
   ax.invert_zaxis()
