@@ -15,12 +15,12 @@ class NeuronalPopulation:
 
         elif(p.generateWeightsMethod == 'templateNeurone'):
             # Instantiate a neurone with preferred direction 0, then roll its weights to offset them according to thetaIndex.
-            self.neurones = np.array([Neurone(theta_0=5+thetaOffset)
+            self.neurones = np.array([Neurone(theta_0=thetaOffset)
                                      for theta in p.thetaSeries])
 
             for neuroneIndex, neurone in enumerate(self.neurones):
                 neurone.theta_0 = p.thetaSeries[neuroneIndex]
-                neurone.rollWeights(neuroneIndex)
+                neurone.rollWeights(neuroneIndex+1)
 
     def getAllWeights(self):
         # Returns w(θ,t)

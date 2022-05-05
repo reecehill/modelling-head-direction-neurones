@@ -15,10 +15,9 @@ generateWeightsMethod = 'templateNeurone'
 # Network size
 # +1 is added here to account for indexing differences between Matlab and Python.
 # NOTE: To copy the results of the paper, ensure this is set to 37. Results are bizarre otherwise.
-numberOfUnits = (36)+1
+numberOfUnits = (360)+1
 
-
-f_max = 40 #Hz
+f_max = 40  # Hz
 
 
 # Taken from Section 3, Basic Dynamic Model, in-text.
@@ -26,7 +25,7 @@ f_max = 40 #Hz
 tau = 10  # msec
 
 # Total time to simulate for
-totalSimulationTime = 8000  # msec
+totalSimulationTime = 1000  # msec
 
 
 # Possible options
@@ -42,7 +41,6 @@ initialCondition = 'tuningCurve'
 
 
 # //////////////////////////////////
-
 
 
 # ----------START------------
@@ -90,7 +88,6 @@ A = 1
 B = (f_max - A)/np.exp(K)
 
 
-
 # ---------------------------
 # TUNING CURVE PARAMETERS
 # -----------END-------------
@@ -114,7 +111,7 @@ epsilon = 0.06
 # derivative
 oddWeightFunction = 'derivative'
 
-#TODO: Is this the same as alpha as defined in Figure 4>
+# TODO: Is this the same as alpha as defined in Figure 4>
 alphaSinusoid = 0.000201
 
 # Used for odd weights

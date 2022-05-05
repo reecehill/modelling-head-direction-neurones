@@ -25,7 +25,10 @@ class Neurone:
     return self.evenWeights + self.oddWeights
   
   def rollWeights(self, byAmount):
-    self.evenWeights = np.roll(self.evenWeights, byAmount)
+    unrolledWeights = self.evenWeights
+    rolledWeights = np.roll(unrolledWeights, byAmount)
+    self.evenWeights = rolledWeights
+    self.tuningCurve = np.roll(self.tuningCurve, byAmount)
     return self
   
   def setOddWeights(self, temporaryNeurone={}):

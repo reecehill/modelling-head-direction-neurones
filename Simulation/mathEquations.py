@@ -34,12 +34,29 @@ def getInverseSigmoid(sigma):
   x = 1/p.b * np.log( np.exp( (sigma/p.alpha)**(1/p.beta) ) -1) - p.c
   return x
 
-def getDuDt(t, u, w):
+
+def getDuDt(t, u, w, additionalUInputAtTimeT):
   # TODO: Confirm, is f() the sigmoid function here? This is not clear in the paper.
-  # See: Equation 2. 
-  
-  f = getSigmoid(u);
-  duDt = 1/p.tau * ( -u + np.matmul(w,f) )
+  # See: Equation 2.
+
+  f = getSigmoid(u)
+  duDt = 1/p.tau * (-u + np.matmul(w, f))
+  return duDt
+
+
+def getDuDtWithExternalInput(t, u, w, additionalUInputAtTimeT):
+  # TODO: Confirm, is f() the sigmoid function here? This is not clear in the paper.
+  # See: Equation 2.
+
+  # t is not integer. Therefore, round down to nearest tau value, to find the nearest "t" in the p.timeSeries
+  # Find the index of sampledT within p.timeSeries
+  sampledTIndex = np.argwhere(p.timeSeries == np.floor(t/p.tau)*p.tau)[0][0]
+
+  # Use this time index to get the correct u values for this time.
+  additionalUInputAtTimeT_now = additionalUInputAtTimeT[sampledTIndex] * 0.25
+
+  f = getSigmoid(u)
+  duDt = 1/p.tau * (-u + np.matmul(w, f) + (additionalUInputAtTimeT_now))
   return duDt
 
 
