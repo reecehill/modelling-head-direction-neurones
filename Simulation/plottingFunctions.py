@@ -7,6 +7,8 @@ import numpy as np
 from scipy.integrate import solve_ivp
 import weightHandler as wh
 
+mpl.rcParams['font.size'] = 12
+mpl.rcParams['axes.labelpad'] = 6
 mpl.rcParams['savefig.dpi'] = 1000
 mpl.rcParams['figure.figsize'] = (19, 10)
 
@@ -214,15 +216,17 @@ def plotEffectOfAdditionalTimedUInput(neuronalPopulation):
         shape=(p.timeSeries.size, p.thetaSeries.size))
     usWithInput = np.argwhere((p.timeSeries >= externalCurrentStart) & (
         p.timeSeries <= externalCurrentStop))
-    additionalUInputAtTimeT[usWithInput] = e.getU(
-        e.getTuningCurve(theta_0=270))
+    input1 = e.getU(
+        e.getTuningCurve(theta_0=90)) * 0.25
+    input2 = e.getU(e.getTuningCurve(theta_0=-90)) * 0.2
 
+    additionalUInputAtTimeT[usWithInput] = np.add(input1, input2)
     if(p.initialCondition == 'noise'):
         firingActivityOfAllNeurones = p.randomGenerator.normal(
             loc=10, scale=3, size=p.numberOfUnits)
 
     elif(p.initialCondition == 'tuningCurve'):
-        firingActivityOfAllNeurones = e.getTuningCurve(theta_0=45)
+        firingActivityOfAllNeurones = e.getTuningCurve(theta_0=0)
 
     elif(p.initialCondition == 'steadyState'):
         firingActivityOfAllNeurones = np.ones(
