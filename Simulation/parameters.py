@@ -22,7 +22,7 @@ f_max = 40  # Hz
 
 # Taken from Section 3, Basic Dynamic Model, in-text.
 # Time steps in
-tau = 20  # msec
+tau = 10  # msec
 
 # Total time to simulate for
 totalSimulationTime = 1200  # msec
