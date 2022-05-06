@@ -35,7 +35,7 @@ def getInverseSigmoid(sigma):
   return x
 
 
-def getDuDt(t, u, w, additionalUInputAtTimeT):
+def getDuDt(t, u, w):
   # TODO: Confirm, is f() the sigmoid function here? This is not clear in the paper.
   # See: Equation 2.
 
@@ -53,7 +53,7 @@ def getDuDtWithExternalInput(t, u, w, additionalUInputAtTimeT):
   sampledTIndex = np.argwhere(p.timeSeries == np.floor(t/p.tau)*p.tau)[0][0]
 
   # Use this time index to get the correct u values for this time.
-  additionalUInputAtTimeT_now = additionalUInputAtTimeT[sampledTIndex] * 0.25
+  additionalUInputAtTimeT_now = additionalUInputAtTimeT[sampledTIndex]
 
   f = getSigmoid(u)
   duDt = 1/p.tau * (-u + np.matmul(w, f) + (additionalUInputAtTimeT_now))

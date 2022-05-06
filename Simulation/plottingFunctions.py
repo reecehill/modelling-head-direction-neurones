@@ -7,7 +7,7 @@ import numpy as np
 from scipy.integrate import solve_ivp
 import weightHandler as wh
 
-mpl.rcParams['font.size'] = 12
+mpl.rcParams['font.size'] = 25
 mpl.rcParams['axes.labelpad'] = 6
 mpl.rcParams['savefig.dpi'] = 1000
 mpl.rcParams['figure.figsize'] = (19, 10)
@@ -122,17 +122,48 @@ def plotWeightDistribution(weights, hasNoise=False, title=""):
 
 
 def plotZerothNeuroneOddAndEvenWeights(neuronalPopulation_dynamic):
-    fig, ax = plt.subplots(nrows=3, ncols=1, squeeze=True)
+    fig, ax = plt.subplots(nrows=3, ncols=1, squeeze=True, sharex=True)
+
     for neurone in neuronalPopulation_dynamic.neurones:
         if(neurone.theta_0 == 0):
-            ax[0].set_title('A neurone\'s evenWeights')
-            ax[0].plot(p.thetaSeries, neurone.evenWeights)
+            # For illustration purposes, scale up the weights. However, this is not needed for calculations.
+            #oddWeights = neurone.oddWeights*p.numberOfUnits
+            #evenWeights = neurone.evenWeights*p.numberOfUnits
+            oddWeights = neurone.oddWeights
+            evenWeights = neurone.evenWeights
+            ax[0].set_title(r"$W(\theta)$")
+            ax[0].plot(p.thetaSeries, evenWeights)
+            ax[0].axvline(x=0, color=[0, 0, 0, 0.5], linestyle='--')
+            ax[0].axvline(x=90, color=[0, 0, 0, 0.5], linestyle='--')
+            ax[0].axvline(x=-90, color=[0, 0, 0, 0.5], linestyle='--')
+            ax[0].axhline(y=0, color=[0, 0, 0, 0.5], linestyle='--')
+            ax[0].set_ylim([-0.3, 0.4])
 
-            ax[1].set_title('A neurone\'s oddWeights')
-            ax[1].plot(p.thetaSeries, neurone.oddWeights)
+            ax[1].set_title(r"$\gamma$" r"$W'$" r"$(\theta)$")
+            if(p.oddWeightFunction == 'sinusoid'):
 
-            ax[2].set_title('A neurone\'s allWeights')
-            ax[2].plot(p.thetaSeries, neurone.getWeights())
+                oddComponentTitle = r"$\alpha$" r"$sin(\theta)$"
+            else:
+                oddComponentTitle = r"$\gamma$" r"$W'$" r"$(\theta)$"
+            ax[1].set_title(oddComponentTitle)
+            ax[1].plot(p.thetaSeries, oddWeights)
+            ax[1].axvline(x=0, color=[0, 0, 0, 0.5], linestyle='--')
+            ax[1].axvline(x=90, color=[0, 0, 0, 0.5], linestyle='--')
+            ax[1].axvline(x=-90, color=[0, 0, 0, 0.5], linestyle='--')
+            ax[1].axhline(y=0, color=[0, 0, 0, 0.5], linestyle='--')
+            ax[1].set_ylim([-0.3, 0.4])
+
+            ax[2].set_title(r"$W(\theta) +$ " + oddComponentTitle)
+            ax[2].plot(p.thetaSeries, np.add(evenWeights, oddWeights))
+            ax[2].set_ylim([-0.3, 0.4])
+            ax[2].axvline(x=0, color=[0, 0, 0, 0.5], linestyle='--')
+            ax[2].axvline(x=90, color=[0, 0, 0, 0.5], linestyle='--')
+            ax[2].axvline(x=-90, color=[0, 0, 0, 0.5], linestyle='--')
+            ax[2].axhline(y=0, color=[0, 0, 0, 0.5], linestyle='--')
+
+    plt.xlabel('Theta (degrees)')
+    plt.ylabel('Synaptic Weight Distributions')
+    plt.suptitle('Weight modification with ' + p.oddWeightFunction)
     return fig
 
 
@@ -159,7 +190,7 @@ def solveDuDt(neuronalPopulation, title=""):
             loc=10, scale=3, size=p.numberOfUnits)
 
     elif(p.initialCondition == 'tuningCurve'):
-        firingActivityOfAllNeurones = e.getTuningCurve(theta_0=90)
+        firingActivityOfAllNeurones = e.getTuningCurve(theta_0=-90)
 
     elif(p.initialCondition == 'steadyState'):
         firingActivityOfAllNeurones = np.ones(
@@ -254,9 +285,11 @@ def plotEffectOfAdditionalTimedUInput(neuronalPopulation):
     ax = fig.gca()
 
     # Labelling X-Axis
-    ax.set_xlabel('Time')
+    ax.set_xlabel('Time (ms)')
+    ax.set_xlim([0,1200])
     # Labelling Y-Axis
     ax.set_ylabel('Neurones firing rate (Hz)')
+    ax.set_ylim([0, 60])
     # Labelling Z-Axis
     # ax.set_zlabel('Time')
     colors = [plt.cm.tab10(x) for x in np.linspace(0, 0.3, 4)]

@@ -22,7 +22,7 @@ class Neurone:
     self.uActivity = np.zeros(p.timeSeries.size)
 
   def getWeights(self):
-    return self.evenWeights + self.oddWeights
+    return (self.evenWeights + self.oddWeights)
   
   def rollWeights(self, byAmount):
     unrolledWeights = self.evenWeights

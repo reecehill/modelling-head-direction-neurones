@@ -22,10 +22,10 @@ f_max = 40  # Hz
 
 # Taken from Section 3, Basic Dynamic Model, in-text.
 # Time steps in
-tau = 10  # msec
+tau = 20  # msec
 
 # Total time to simulate for
-totalSimulationTime = 1000  # msec
+totalSimulationTime = 1200  # msec
 
 
 # Possible options
@@ -112,7 +112,7 @@ epsilon = 0.06
 oddWeightFunction = 'derivative'
 
 # TODO: Is this the same as alpha as defined in Figure 4>
-alphaSinusoid = 0.000201
+alphaSinusoid = 0.0037
 
 # Used for odd weights
 gamma = np.rad2deg(-0.063)
